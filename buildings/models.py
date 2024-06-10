@@ -1,11 +1,8 @@
 from django.db import models
 
-NULLABLE = {'blank': True,
-            'null': True,
-            }
-
 
 class House(models.Model):
+    """Модель для хранения информации о доме."""
     address = models.CharField(max_length=200, verbose_name='адрес')
 
     def __str__(self):
@@ -17,11 +14,12 @@ class House(models.Model):
 
 
 class Apartment(models.Model):
-    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name='apartments')
+    """Модель для хранения информации о квартире."""
+    house = models.ForeignKey(House, on_delete=models.CASCADE, verbose_name='квартира', related_name='apartments')
     area = models.FloatField(verbose_name='площадь')
 
     def __str__(self):
-        return f"{self.house}, {self.area}"
+        return f"{self.house}"
 
     class Meta:
         verbose_name = 'квартира'
@@ -29,7 +27,9 @@ class Apartment(models.Model):
 
 
 class WaterMeter(models.Model):
-    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE, related_name='water_meters')
+    """Модель для хранения информации о счетчике."""
+    apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE, verbose_name='адрес',
+                                  related_name='water_meters')
     readings = models.FloatField(verbose_name='показания')
     month = models.DateField(verbose_name='дата')
 
@@ -42,6 +42,7 @@ class WaterMeter(models.Model):
 
 
 class Tariff(models.Model):
+    """Модель для хранения информации о тарифах."""
     price_per_unit = models.FloatField(verbose_name='тариф за единицу')
     price_per_area = models.FloatField(verbose_name='тариф за площадь')
 
